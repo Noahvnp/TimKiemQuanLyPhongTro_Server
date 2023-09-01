@@ -1,16 +1,17 @@
 import db from "../models";
 import bcrypt from "bcryptjs";
 import { stringify, v4 } from "uuid";
-// import chothuecanho from "../../data/chothuecanho.json";
+import chothuecanho from "../../data/chothuecanho.json";
 // import chothuematbang from "../../data/chothuematbang.json";
 // import chothuephongtro from "../../data/chothuephongtro.json";
-import nhachothue from "../../data/nhachothue.json";
+// import nhachothue from "../../data/nhachothue.json";
 import generateCode from "../ultils/generateCode";
+import { where } from "sequelize";
 require("dotenv").config();
-// const dataBody = chothuecanho.body;
+const dataBody = chothuecanho.body;
 // const dataBody = chothuematbang.body;
 // const dataBody = chothuephongtro.body;
-const dataBody = nhachothue.body;
+// const dataBody = nhachothue.body;
 // Hàm băm password
 const hashPassword = (password) =>
   bcrypt.hashSync(password, bcrypt.genSaltSync(12));
@@ -21,7 +22,7 @@ export const insertService = () =>
     try {
       dataBody.forEach(async (item) => {
         let postId = v4();
-        let labelCode = generateCode(4);
+        let labelCode = generateCode(item?.header?.class?.classType);
         let attributesId = v4();
         let userId = v4();
         let imagesId = v4();
@@ -34,10 +35,10 @@ export const insertService = () =>
           labelCode,
           address: item?.header?.address,
           attributesId,
-          // categoryCode: "CTCH",
+          categoryCode: "CTCH",
           // categoryCode: "CTMB",
           // categoryCode: "CTPT",
-          categoryCode: "NCT",
+          // categoryCode: "NCT",
           description: JSON.stringify(item?.mainContent?.description),
           userId,
           overviewId,
@@ -54,9 +55,12 @@ export const insertService = () =>
           id: imagesId,
           image: JSON.stringify(item?.images),
         });
-        await db.Label.create({
-          code: labelCode,
-          value: item?.header?.class?.classType,
+        await db.Label.findOrCreate({
+          where: { code: labelCode },
+          defaults: {
+            code: labelCode,
+            value: item?.header?.class?.classType,
+          },
         });
         await db.Overview.create({
           id: overviewId,
