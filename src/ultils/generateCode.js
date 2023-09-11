@@ -11,13 +11,7 @@ const generateCode = (value) => {
     .join("");
   let merged = value + process.env.SECRET_GENERATOR; //thanhphohanoiphongtro123
   let lengthMerged = merged.length; //24
-
-  // Lặp 3 lần:
-  // - Lần 1 : i = 0 Lấy độ dài của value + với chuỗi secret (biến merged) = 24 / 2 = 12 ==> output = "i", index = "12"
-  // - Lần 2 : i = 1 lengthMerged = 12 /2 = 6 => output = "h", index = "6"
-  // - Lần 3 : i = 2 Lấy độ dài của biết merged  = 24/2 = 12.
-  //                Lấy lengthMerged đã được gán từ lần 2 = 6/2 = 3
-  //                 ==> index = 12 + 3 = 15 => output = "o"
+  // Lấy ra 3 kí tự trong chuỗi với các vị trí: 1/2, 3/4, 1/4
   for (let i = 0; i < 3; i++) {
     let index =
       i === 2
@@ -26,8 +20,7 @@ const generateCode = (value) => {
     output += merged.charAt(index);
     lengthMerged = index;
   }
-  return `${value.charAt(0)}${output}`.toUpperCase(); //Output gồm 4 kí tự in hoa với charAt(0) là chữ cái đầu của value
-  /// ==> "T"+"IHO"
+  return `${value.charAt(2)}${output}`.toUpperCase();
 };
 
 export default generateCode;
