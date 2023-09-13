@@ -67,3 +67,32 @@ export const getPostsLimitService = (page, query) =>
       reject(error);
     }
   });
+
+export const getNewPostsService = () =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await db.Post.findAll({
+        raw: true,
+        nest: true,
+        offset: 0,
+        order: [["createdAt", "DESC"]],
+        limit: +process.env.LIMIT,
+        include: [
+          { model: db.Image, as: "images", attributes: ["image"] },
+          {
+            model: db.Attribute,
+            as: "attributes",
+            attributes: ["price", "acreage", "published", "hashtag"],
+          },
+        ],
+        attributes: ["id", "title", "star", "createdAt"],
+      });
+      resolve({
+        err: response ? 0 : 1,
+        msg: response ? "Get new posts successfully" : "Get new posts failed",
+        response,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
