@@ -1,4 +1,5 @@
 import db from "../models";
+const { Op } = require("sequelize");
 
 export const getPostsService = () =>
   new Promise(async (resolve, reject) => {
@@ -31,12 +32,21 @@ export const getPostsService = () =>
     }
   });
 
-export const getPostsLimitService = (page, query) =>
+export const getPostsLimitService = (
+  page,
+  query,
+  { priceNumber, acreageNumber }
+) =>
   new Promise(async (resolve, reject) => {
     try {
       let offset = page || +page > 1 ? +page - 1 : 0;
+      let queries = { ...query };
+      if (priceNumber) queries.priceNumber = { [Op.between]: priceNumber };
+      if (acreageNumber)
+        queries.acreageNumber = { [Op.between]: acreageNumber };
+
       const response = await db.Post.findAndCountAll({
-        where: query,
+        where: queries,
         raw: true,
         nest: true,
         offset: offset * +process.env.LIMIT,
@@ -68,7 +78,7 @@ export const getPostsLimitService = (page, query) =>
     }
   });
 
-export const getNewPostsService = () =>
+export const getLatestPostsService = () =>
   new Promise(async (resolve, reject) => {
     try {
       const response = await db.Post.findAll({
@@ -89,7 +99,9 @@ export const getNewPostsService = () =>
       });
       resolve({
         err: response ? 0 : 1,
-        msg: response ? "Get new posts successfully" : "Get new posts failed",
+        msg: response
+          ? "Get latest posts successfully"
+          : "Get latest posts failed",
         response,
       });
     } catch (error) {

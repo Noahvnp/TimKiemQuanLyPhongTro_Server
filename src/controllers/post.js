@@ -13,9 +13,12 @@ export const getPosts = async (req, res) => {
 };
 
 export const getPostsLimit = async (req, res) => {
-  const { page, ...query } = req.query;
+  const { page, priceNumber, acreageNumber, ...query } = req.query;
   try {
-    const response = await postService.getPostsLimitService(page, query);
+    const response = await postService.getPostsLimitService(page, query, {
+      priceNumber,
+      acreageNumber,
+    });
     return res.status(200).json(response);
   } catch (error) {
     return res.status(500).json({
@@ -25,9 +28,9 @@ export const getPostsLimit = async (req, res) => {
   }
 };
 
-export const getNewPosts = async (req, res) => {
+export const getLatestPosts = async (req, res) => {
   try {
-    const response = await postService.getNewPostsService();
+    const response = await postService.getLatestPostsService();
     return res.status(200).json(response);
   } catch (error) {
     return res.status(500).json({

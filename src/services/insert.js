@@ -12,6 +12,7 @@ import generateCode from "../ultils/generateCode";
 import { dataPrices, dataAcreages } from "../ultils/data";
 import {
   extractPriceFromString,
+  extractPriceFromStringV2,
   extractNumberFromString,
 } from "../ultils/common";
 
@@ -95,6 +96,12 @@ export const insertService = () =>
             overviewId,
             imagesId,
             provinceCode,
+            priceNumber: extractPriceFromStringV2(
+              item?.header?.attributes?.price
+            ),
+            acreageNumber: extractNumberFromString(
+              item?.header?.attributes?.acreage
+            ),
           });
 
           await db.Attribute.create({
