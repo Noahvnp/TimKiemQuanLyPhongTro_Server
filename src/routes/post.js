@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.get("/all", postController.getPosts);
 router.get("/limit", postController.getPostsLimit);
-router.get("/new_posts", postController.getNewPosts);
+router.get("/latest_posts", postController.getLatestPosts);
 
 export default router;
