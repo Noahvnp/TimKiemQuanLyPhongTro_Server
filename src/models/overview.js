@@ -14,12 +14,12 @@ module.exports = (sequelize, DataTypes) => {
   Overview.init(
     {
       code: DataTypes.STRING,
-      area: DataTypes.STRING,
+      acreage: DataTypes.STRING,
       type: DataTypes.STRING,
       target: DataTypes.STRING,
       bonus: DataTypes.STRING,
-      created: DataTypes.STRING,
-      expire: DataTypes.STRING,
+      created: DataTypes.DATE,
+      expire: DataTypes.DATE,
     },
     {
       sequelize,
