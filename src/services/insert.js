@@ -121,7 +121,7 @@ export const insertService = () =>
             id: overviewId,
             code: item?.overview?.content.find((i) => i.name === "Mã tin:")
               ?.content,
-            area: item?.overview?.content.find((i) => i.name === "Khu vực")
+            acreage: item?.overview?.content.find((i) => i.name === "Khu vực")
               ?.content,
             type: item?.overview?.content.find(
               (i) => i.name === "Loại tin rao:"

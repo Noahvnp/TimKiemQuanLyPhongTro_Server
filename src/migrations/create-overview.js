@@ -11,7 +11,7 @@ module.exports = {
       code: {
         type: Sequelize.STRING,
       },
-      area: {
+      acreage: {
         type: Sequelize.STRING,
       },
       type: {

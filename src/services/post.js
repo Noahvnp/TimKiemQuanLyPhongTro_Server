@@ -1,5 +1,9 @@
 import db from "../models";
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
+
+import { v4 as generateId } from "uuid";
+import generateCode from "../ultils/generateCode";
+import moment from "moment";
 
 export const getPostsService = () =>
   new Promise(async (resolve, reject) => {
@@ -103,6 +107,96 @@ export const getLatestPostsService = () =>
           ? "Get latest posts successfully"
           : "Get latest posts failed",
         response,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+
+export const createNewPostService = (body, userId) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const attributesId = generateId();
+      const imagesId = generateId();
+      const overviewId = generateId();
+      const labelCode = generateCode(body?.label);
+      const provinceCode = body?.province?.includes("Thành phố")
+        ? generateCode(body?.province?.replace("Thành phố ", ""))
+        : generateCode(body?.province?.replace("Tỉnh ", ""));
+      const hashtag = `#${Math.floor(Math.random() * Math.pow(10, 6))}`;
+      const currentDate = new Date();
+
+      await db.Post.create({
+        id: generateId(),
+        title: body?.title,
+        labelCode,
+        address: body?.address || null,
+        attributesId,
+        categoryCode: body?.categoryCode || null,
+        acreageCode: body?.acreageCode || null,
+        priceCode: body?.priceCode || null,
+        description: JSON.stringify(body?.description) || null,
+        userId,
+        overviewId,
+        imagesId,
+        provinceCode: provinceCode || null,
+        priceNumber: body?.priceNumber || null,
+        acreageNumber: body?.acreageNumber || null,
+      });
+
+      await db.Attribute.create({
+        id: attributesId,
+        price:
+          +body?.priceNumber < 1
+            ? `${+body?.priceNumber * 100000} đồng/tháng`
+            : `${body?.priceNumber} triệu/tháng`,
+        acreage: `${body?.acreageNumber} m2`,
+        published: moment().format("DD/MM/YYYY"),
+        hashtag,
+      });
+
+      await db.Image.create({
+        id: imagesId,
+        image: JSON.stringify(body?.images),
+      });
+
+      await db.Overview.create({
+        id: overviewId,
+        code: hashtag,
+        acreage: body?.label,
+        type: body?.category || "",
+        target: body?.target,
+        bonus: "Tin thường",
+        created: currentDate,
+        expire: new Date().setDate(currentDate.getDate() + 10),
+      });
+
+      await db.Province.findOrCreate({
+        where: {
+          [Op.or]: [
+            { value: body?.province?.replace("Thành phố ", "") },
+            { value: body?.province?.replace("Tỉnh ", "") },
+          ],
+        },
+        defaults: {
+          code: provinceCode,
+          value: body?.province?.includes("Thành phố")
+            ? body?.province?.replace("Thành phố ", "")
+            : body?.province?.replace("Tỉnh ", ""),
+        },
+      });
+
+      await db.Label.findOrCreate({
+        where: { code: labelCode },
+        defaults: {
+          code: labelCode,
+          value: body?.label,
+        },
+      });
+
+      resolve({
+        err: 0,
+        msg: "OK",
       });
     } catch (error) {
       reject(error);
