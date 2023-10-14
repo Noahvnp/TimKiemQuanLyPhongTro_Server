@@ -11,5 +11,7 @@ router.get("/latest_posts", postController.getLatestPosts);
 
 router.use(verifyToken);
 router.post("/create_post", postController.createNewPost);
+router.get("/limit_admin", postController.getPostsLimitAdmin);
+router.put("/update_post", postController.updatePostAdmin);
 
 export default router;
