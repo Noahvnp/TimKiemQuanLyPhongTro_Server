@@ -40,23 +40,26 @@ export const getPostsService = () =>
 
 export const getPostsLimitService = (
   page,
-  query,
+  { limitPost, order, ...query },
   { priceNumber, acreageNumber }
 ) =>
   new Promise(async (resolve, reject) => {
     try {
       let offset = page || +page > 1 ? +page - 1 : 0;
-      let queries = { ...query };
-      if (priceNumber) queries.priceNumber = { [Op.between]: priceNumber };
-      if (acreageNumber)
-        queries.acreageNumber = { [Op.between]: acreageNumber };
+      const queries = { ...query };
+      const limit = +limitPost || +process.env.LIMIT;
+      queries.limit = limit;
+
+      if (priceNumber) query.priceNumber = { [Op.between]: priceNumber };
+      if (acreageNumber) query.acreageNumber = { [Op.between]: acreageNumber };
+      if (order) queries.order = [order];
 
       const response = await db.Post.findAndCountAll({
-        where: queries,
+        where: query,
         raw: true,
         nest: true,
-        offset: offset * +process.env.LIMIT,
-        limit: +process.env.LIMIT,
+        offset: offset * limit,
+        ...queries,
         include: [
           { model: db.Image, as: "images", attributes: ["image"] },
           {
@@ -69,6 +72,15 @@ export const getPostsLimitService = (
             as: "user",
             attributes: ["name", "phone", "zalo", "avatar"],
           },
+          {
+            model: db.Overview,
+            as: "overviews",
+          },
+          {
+            model: db.Label,
+            as: "label",
+            attributes: ["code", "value"],
+          },
         ],
         attributes: ["id", "title", "star", "address", "description"],
       });
@@ -77,37 +89,6 @@ export const getPostsLimitService = (
         msg: response
           ? "Get posts limit successfully"
           : "Get posts limit failed",
-        response,
-      });
-    } catch (error) {
-      reject(error);
-    }
-  });
-
-export const getLatestPostsService = () =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const response = await db.Post.findAll({
-        raw: true,
-        nest: true,
-        offset: 0,
-        order: [["createdAt", "DESC"]],
-        limit: +process.env.LIMIT,
-        include: [
-          { model: db.Image, as: "images", attributes: ["image"] },
-          {
-            model: db.Attribute,
-            as: "attributes",
-            attributes: ["price", "acreage", "published", "hashtag"],
-          },
-        ],
-        attributes: ["id", "title", "star", "createdAt"],
-      });
-      resolve({
-        err: response ? 0 : 1,
-        msg: response
-          ? "Get latest posts successfully"
-          : "Get latest posts failed",
         response,
       });
     } catch (error) {
@@ -332,6 +313,21 @@ export const updatePostAdminService = ({
       resolve({
         err: 0,
         msg: "Update post successfully",
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+
+export const deletePost = (postId) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await db.Post.destroy({
+        where: { id: postId },
+      });
+      resolve({
+        err: response ? 0 : 1,
+        msg: response ? "Delete post successfully" : "Delete post failed",
       });
     } catch (error) {
       reject(error);
