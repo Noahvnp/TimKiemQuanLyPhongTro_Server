@@ -6,6 +6,7 @@ import priceRouter from "./price";
 import acreageRouter from "./acreage";
 import provinceRouter from "./province";
 import userRouter from "./user";
+import rentalRouter from "./rental";
 
 const initRoutes = (app) => {
   app.use("/api/v1/auth", authRouter);
@@ -16,6 +17,7 @@ const initRoutes = (app) => {
   app.use("/api/v1/acreage", acreageRouter);
   app.use("/api/v1/province", provinceRouter);
   app.use("/api/v1/user", userRouter);
+  app.use("/api/v1/rental", rentalRouter);
 
   return app.use("/", (req, res) => {
     console.log("Server started");

@@ -48,6 +48,9 @@ module.exports = {
       imagesId: {
         type: Sequelize.STRING,
       },
+      renterId: {
+        type: Sequelize.STRING,
+      },
       priceNumber: {
         type: Sequelize.FLOAT,
       },
