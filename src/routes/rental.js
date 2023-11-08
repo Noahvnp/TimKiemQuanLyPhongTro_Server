@@ -8,5 +8,6 @@ const router = express.Router();
 router.use(verifyToken);
 router.post("/", rentalController.rental);
 router.get("/renter", rentalController.getRenters);
+router.put("/accept_renter", rentalController.acceptRenter);
 
 export default router;

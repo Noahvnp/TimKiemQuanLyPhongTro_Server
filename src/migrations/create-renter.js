@@ -14,6 +14,12 @@ module.exports = {
       phone: {
         type: Sequelize.STRING,
       },
+      work: {
+        type: Sequelize.STRING,
+      },
+      yearOfBirth: {
+        type: Sequelize.INTEGER,
+      },
       gmail: {
         type: Sequelize.STRING,
       },
@@ -23,7 +29,7 @@ module.exports = {
       resident: {
         type: Sequelize.STRING,
       },
-      homnetown: {
+      hometown: {
         type: Sequelize.STRING,
       },
       postId: {
