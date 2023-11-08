@@ -39,6 +39,11 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: "code",
         as: "label",
       });
+
+      Post.hasMany(models.Room, {
+        foreignKey: "postId",
+        as: "post",
+      });
     }
   }
   Post.init(

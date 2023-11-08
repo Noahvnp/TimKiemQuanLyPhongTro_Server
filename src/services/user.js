@@ -19,6 +19,28 @@ export const getOne = (id) =>
     }
   });
 
+// GET CURRENT USER
+export const getAll = (query) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await db.User.findAll({
+        raw: true,
+        nest: true,
+        limit: 10,
+        attributes: { exclude: ["password"] },
+      });
+      resolve({
+        err: response ? 0 : 1,
+        msg: response
+          ? "Get all users successfully"
+          : "Failed to get all users",
+        response,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+
 // UPDATE USER
 export const updateUser = (payload, id) =>
   new Promise(async (resolve, reject) => {
