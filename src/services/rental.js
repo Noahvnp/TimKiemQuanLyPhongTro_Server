@@ -36,11 +36,20 @@ export const rentalSerivce = (body, userId, postId) =>
     }
   });
 
-export const getRentersService = (postId) =>
+export const getRentersService = ({
+  postId,
+  isConfirmed,
+  isRented,
+  ...query
+}) =>
   new Promise(async (resolve, reject) => {
+    if (postId) query.postId = postId;
+    if (isConfirmed) query.isConfirmed = isConfirmed;
+    if (isRented) query.isRented = isRented;
+
     try {
-      const response = await db.Renter.findAll({
-        where: { postId },
+      const response = await db.Renter.findAndCountAll({
+        where: query,
         raw: true,
         nest: true,
       });

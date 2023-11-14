@@ -9,15 +9,34 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Contract.belongsTo(models.Room, {
+        foreignKey: "roomId",
+        targetKey: "id",
+        as: "room",
+      });
+
+      Contract.belongsTo(models.Renter, {
+        foreignKey: "customerId",
+        targetKey: "id",
+        as: "renter",
+      });
+
+      Contract.hasMany(models.Payment, {
+        foreignKey: "contractId",
+        as: "contract",
+      });
     }
   }
   Contract.init(
     {
-      roomId: DataTypes.INTEGER,
-      customerId: DataTypes.INTEGER,
+      roomId: DataTypes.STRING,
+      customerId: DataTypes.STRING,
+      categoryCode: DataTypes.STRING,
       startDate: DataTypes.DATE,
       endDate: DataTypes.DATE,
       depositAmount: DataTypes.FLOAT,
+      waterCost: DataTypes.FLOAT,
+      electrictCost: DataTypes.FLOAT,
       contractStatus: DataTypes.STRING,
     },
     {

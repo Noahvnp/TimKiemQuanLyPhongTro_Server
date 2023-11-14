@@ -9,9 +9,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Renter.hasMany(models.Post, {
-        foreignKey: "renterId",
+      Renter.belongsTo(models.Post, {
+        foreignKey: "postId",
+        targetKey: "id",
         as: "renter",
+      });
+
+      Renter.hasMany(models.Contract, {
+        foreignKey: "contractId",
+        as: "contract",
       });
     }
   }
@@ -28,6 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       postId: DataTypes.STRING,
       userId: DataTypes.STRING,
       isConfirmed: DataTypes.BOOLEAN,
+      isRented: DataTypes.BOOLEAN,
     },
     {
       sequelize,

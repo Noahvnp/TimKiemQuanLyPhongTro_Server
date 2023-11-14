@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: "id",
         as: "post",
       });
+
+      Room.hasMany(models.Contract, {
+        foreignKey: "roomId",
+        as: "room",
+      });
     }
   }
   Room.init(

@@ -4,16 +4,19 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("Contracts", {
       id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
+        allowNull: false,
         primaryKey: true,
-        autoIncrement: true,
       },
       roomId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
+        type: Sequelize.STRING,
       },
       customerId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      categoryCode: {
+        type: Sequelize.STRING,
         allowNull: false,
       },
       startDate: {
@@ -30,7 +33,20 @@ module.exports = {
       },
       contractStatus: {
         type: Sequelize.STRING,
+      },
+      waterCost: {
+        type: Sequelize.FLOAT,
+      },
+      electrictCost: {
+        type: Sequelize.FLOAT,
+      },
+      createdAt: {
         allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
       },
     });
   },

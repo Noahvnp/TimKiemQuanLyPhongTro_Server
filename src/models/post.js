@@ -29,11 +29,6 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: "id",
         as: "user",
       });
-      Post.belongsTo(models.Renter, {
-        foreignKey: "renterId",
-        targetKey: "id",
-        as: "renter",
-      });
       Post.belongsTo(models.Label, {
         foreignKey: "labelCode",
         targetKey: "code",
@@ -43,6 +38,11 @@ module.exports = (sequelize, DataTypes) => {
       Post.hasMany(models.Room, {
         foreignKey: "postId",
         as: "post",
+      });
+
+      Post.hasMany(models.Renter, {
+        foreignKey: "postId",
+        as: "renter",
       });
     }
   }
@@ -61,7 +61,6 @@ module.exports = (sequelize, DataTypes) => {
       userId: DataTypes.STRING,
       overviewId: DataTypes.STRING,
       imagesId: DataTypes.STRING,
-      renterId: DataTypes.STRING,
       priceNumber: DataTypes.FLOAT,
       acreageNumber: DataTypes.FLOAT,
     },

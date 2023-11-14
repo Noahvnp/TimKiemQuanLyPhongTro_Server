@@ -4,9 +4,9 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("Rooms", {
       id: {
-        type: Sequelize.INTEGER,
+        allowNull: false,
         primaryKey: true,
-        autoIncrement: true,
+        type: Sequelize.STRING,
       },
       roomName: {
         type: Sequelize.STRING,
@@ -22,11 +22,18 @@ module.exports = {
       },
       roomStatus: {
         type: Sequelize.STRING,
-        allowNull: false,
       },
       postId: {
         type: Sequelize.STRING,
         allowNull: false,
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
       },
     });
   },

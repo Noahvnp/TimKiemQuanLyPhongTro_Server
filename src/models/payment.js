@@ -7,11 +7,17 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {}
+    static associate(models) {
+      Payment.belongsTo(models.Contract, {
+        foreignKey: "contractId",
+        targetKey: "id",
+        as: "contract",
+      });
+    }
   }
   Payment.init(
     {
-      contractId: DataTypes.INTEGER,
+      contractId: DataTypes.STRING,
       paymentDate: DataTypes.DATE,
       amount: DataTypes.FLOAT,
       paymentMethod: DataTypes.STRING,

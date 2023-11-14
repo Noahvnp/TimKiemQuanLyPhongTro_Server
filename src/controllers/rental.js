@@ -25,7 +25,12 @@ export const rental = async (req, res) => {
 export const getRenters = async (req, res) => {
   try {
     const { postId } = req.query;
-    const response = await rentalSerivce.getRentersService(postId);
+    if (!postId)
+      return res.status(400).json({
+        err: 1,
+        msg: "Missing input",
+      });
+    const response = await rentalSerivce.getRentersService(req.query);
     return res.status(200).json(response);
   } catch (error) {
     return res.status(500).json({
