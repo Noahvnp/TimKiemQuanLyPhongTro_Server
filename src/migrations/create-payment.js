@@ -9,12 +9,15 @@ module.exports = {
         primaryKey: true,
       },
       contractId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      paymentName: {
+        type: Sequelize.STRING,
         allowNull: false,
       },
       paymentDate: {
         type: Sequelize.DATE,
-        allowNull: false,
       },
       amount: {
         type: Sequelize.FLOAT,
@@ -26,6 +29,21 @@ module.exports = {
       },
       note: {
         type: Sequelize.STRING,
+      },
+      paymentForMonth: {
+        type: Sequelize.STRING,
+      },
+      electricIndex_old: {
+        type: Sequelize.FLOAT,
+      },
+      electricIndex_new: {
+        type: Sequelize.FLOAT,
+      },
+      waterIndex_old: {
+        type: Sequelize.FLOAT,
+      },
+      waterIndex_new: {
+        type: Sequelize.FLOAT,
       },
       paymentStatus: {
         type: Sequelize.STRING,

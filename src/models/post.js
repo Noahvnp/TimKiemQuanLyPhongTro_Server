@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
 
       Post.hasMany(models.Renter, {
         foreignKey: "postId",
-        as: "renter",
+        as: "renterPost",
       });
     }
   }

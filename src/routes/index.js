@@ -9,6 +9,7 @@ import userRouter from "./user";
 import rentalRouter from "./rental";
 import roomRouter from "./room";
 import contractouter from "./contract";
+import paymentRouter from "./payment";
 
 const initRoutes = (app) => {
   app.use("/api/v1/auth", authRouter);
@@ -22,6 +23,7 @@ const initRoutes = (app) => {
   app.use("/api/v1/rental", rentalRouter);
   app.use("/api/v1/room", roomRouter);
   app.use("/api/v1/contract", contractouter);
+  app.use("/api/v1/payment", paymentRouter);
 
   return app.use("/", (req, res) => {
     console.log("Server started");

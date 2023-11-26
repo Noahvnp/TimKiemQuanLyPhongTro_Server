@@ -12,12 +12,12 @@ module.exports = (sequelize, DataTypes) => {
       Renter.belongsTo(models.Post, {
         foreignKey: "postId",
         targetKey: "id",
-        as: "renter",
+        as: "renterPost",
       });
 
       Renter.hasMany(models.Contract, {
-        foreignKey: "contractId",
-        as: "contract",
+        foreignKey: "id",
+        as: "renter",
       });
     }
   }

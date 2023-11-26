@@ -29,7 +29,7 @@ export const rentalSerivce = (body, userId, postId) =>
         err: response[1] ? 0 : 2,
         msg: response[1]
           ? "Đăng kí thuê thành công!"
-          : "Thông tin này đã tồn tại!",
+          : "Bạn đã đăng kí rồi! Vui lòng đợi phản hồi nhé!",
       });
     } catch (error) {
       reject(error);

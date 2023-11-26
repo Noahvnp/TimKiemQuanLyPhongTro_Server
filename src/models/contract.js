@@ -21,6 +21,12 @@ module.exports = (sequelize, DataTypes) => {
         as: "renter",
       });
 
+      Contract.belongsTo(models.User, {
+        foreignKey: "userId",
+        targetKey: "id",
+        as: "userCreteContract",
+      });
+
       Contract.hasMany(models.Payment, {
         foreignKey: "contractId",
         as: "contract",
@@ -31,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       roomId: DataTypes.STRING,
       customerId: DataTypes.STRING,
+      userId: DataTypes.STRING,
       categoryCode: DataTypes.STRING,
       startDate: DataTypes.DATE,
       endDate: DataTypes.DATE,

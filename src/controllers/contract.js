@@ -11,7 +11,7 @@ export const createContract = async (req, res) => {
         msg: "Missing or invalid",
       });
     }
-    const response = await contractService.createContractService(req.body);
+    const response = await contractService.createContractService(id, req.body);
     return res.status(200).json(response);
   } catch (error) {
     return res.status(500).json({
@@ -23,13 +23,14 @@ export const createContract = async (req, res) => {
 
 export const getContract = async (req, res) => {
   try {
-    const { postId } = req.query;
-    if (!postId)
+    const { id } = req.user;
+    if (!id)
       return res.status(400).json({
         err: 1,
         msg: "Missing input",
       });
-    const response = await rentalSerivce.getContractService(req.query);
+
+    const response = await contractService.getContractService(id, req.query);
     return res.status(200).json(response);
   } catch (error) {
     return res.status(500).json({

@@ -3,7 +3,7 @@ import { v4 as generateId } from "uuid";
 
 require("dotenv").config();
 
-export const createContractService = (body) =>
+export const createContractService = (userId, body) =>
   new Promise(async (resolve, reject) => {
     try {
       if (body?.room) {
@@ -23,6 +23,7 @@ export const createContractService = (body) =>
       await db.Contract.create({
         id: generateId(),
         roomId: body?.room,
+        userId,
         customerId: body?.customer,
         categoryCode: body?.categoryCode,
         startDate: body?.startDate,
@@ -30,7 +31,7 @@ export const createContractService = (body) =>
         depositAmount: +body?.depositAmount,
         waterCost: +body?.waterCost,
         electrictCost: +body?.electrictCost,
-        contractStatus: "Chưa thanh toán",
+        contractStatus: "Đang hoạt động",
       });
 
       resolve({
@@ -43,16 +44,37 @@ export const createContractService = (body) =>
     }
   });
 
-export const getContractService = ({ postId, isConfirmed, ...query }) =>
+export const getContractService = (
+  userId,
+  { isConfirmed, isRented, ...query }
+) =>
   new Promise(async (resolve, reject) => {
-    if (postId) query.postId = postId;
     if (isConfirmed) query.isConfirmed = isConfirmed;
+    if (isRented) query.isRented = isRented;
 
     try {
-      const response = await db.Renter.findAndCountAll({
+      const response = await db.Contract.findAndCountAll({
         where: query,
         raw: true,
         nest: true,
+        include: [
+          {
+            model: db.Renter,
+            as: "renter",
+            where: { isConfirmed: 1, isRented: 1 },
+            include: [
+              {
+                model: db.Post,
+                as: "renterPost",
+                where: { userId },
+              },
+            ],
+          },
+          {
+            model: db.Room,
+            as: "room",
+          },
+        ],
       });
       resolve({
         err: response ? 0 : 1,
