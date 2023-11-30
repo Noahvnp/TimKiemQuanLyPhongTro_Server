@@ -25,7 +25,6 @@ module.exports = {
       },
       paymentMethod: {
         type: Sequelize.STRING,
-        allowNull: false,
       },
       note: {
         type: Sequelize.STRING,

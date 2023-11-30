@@ -15,6 +15,7 @@ export const createPaymentService = (body) =>
           paymentName: body?.billName,
           paymentForMonth: body?.dateBill,
           amount: +body?.amount,
+          paymentDate: null,
           // paymentMethod
           electricIndex_old: +body?.electricIndex_old,
           electricIndex_new: +body?.electricIndex_new,

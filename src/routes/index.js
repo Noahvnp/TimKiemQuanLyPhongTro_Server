@@ -10,6 +10,7 @@ import rentalRouter from "./rental";
 import roomRouter from "./room";
 import contractouter from "./contract";
 import paymentRouter from "./payment";
+import overviewRouter from "./overview";
 
 const initRoutes = (app) => {
   app.use("/api/v1/auth", authRouter);
@@ -24,6 +25,7 @@ const initRoutes = (app) => {
   app.use("/api/v1/room", roomRouter);
   app.use("/api/v1/contract", contractouter);
   app.use("/api/v1/payment", paymentRouter);
+  app.use("/api/v1/overview", overviewRouter);
 
   return app.use("/", (req, res) => {
     console.log("Server started");
