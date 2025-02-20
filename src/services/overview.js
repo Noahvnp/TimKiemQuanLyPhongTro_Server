@@ -73,3 +73,23 @@ export const getOverview = (userId) =>
       reject(error);
     }
   });
+
+export const getOverviewAdmin = (userId) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      let response = {};
+      const posts = await db.Post.count();
+
+      const contracts = await db.Contract.count();
+
+      const users = await db.User.count();
+
+      const renters = await db.Renter.count();
+
+      response = { posts, contracts, users, renters };
+
+      resolve({ response });
+    } catch (error) {
+      reject(error);
+    }
+  });

@@ -8,7 +8,10 @@ export const createPaymentService = (body) =>
   new Promise(async (resolve, reject) => {
     try {
       const response = await db.Payment.findOrCreate({
-        where: { contractId: body?.contractId, paymentDate: body?.dateBill },
+        where: {
+          contractId: body?.contractId,
+          paymentForMonth: body?.dateBill,
+        },
         defaults: {
           id: generateId(),
           contractId: body?.contractId,
@@ -17,10 +20,10 @@ export const createPaymentService = (body) =>
           amount: +body?.amount,
           paymentDate: null,
           // paymentMethod
-          electricIndex_old: +body?.electricIndex_old,
-          electricIndex_new: +body?.electricIndex_new,
-          waterIndex_old: +body?.waterIndex_old,
-          waterIndex_new: +body?.waterIndex_new,
+          electricIndex_old: +body?.electricIndex_old || 0,
+          electricIndex_new: +body?.electricIndex_new || 0,
+          waterIndex_old: +body?.waterIndex_old || 0,
+          waterIndex_new: +body?.waterIndex_new || 0,
           paymentStatus: "Chưa thanh toán",
           note: body?.notes,
         },

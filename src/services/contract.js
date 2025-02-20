@@ -29,8 +29,8 @@ export const createContractService = (userId, body) =>
         startDate: body?.startDate,
         endDate: body?.endDate,
         depositAmount: +body?.depositAmount,
-        waterCost: +body?.waterCost,
-        electrictCost: +body?.electrictCost,
+        waterCost: +body?.waterCost || 0,
+        electrictCost: +body?.electrictCost || 0,
         contractStatus: "Đang hoạt động",
       });
 
@@ -40,7 +40,6 @@ export const createContractService = (userId, body) =>
       });
     } catch (error) {
       reject(error);
-      console.log(error);
     }
   });
 

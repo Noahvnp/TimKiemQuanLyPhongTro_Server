@@ -7,5 +7,6 @@ const router = express.Router();
 
 router.use(verifyToken);
 router.get("/", overviewController.getOverview);
+router.get("/admin", overviewController.getOverviewAdmin);
 
 export default router;
