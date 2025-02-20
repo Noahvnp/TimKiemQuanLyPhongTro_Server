@@ -1,10 +1,17 @@
 const { Sequelize } = require("sequelize");
 
-const sequelize = new Sequelize("phongtro123", "root", null, {
-  host: "localhost",
-  dialect: "mysql",
-  logging: false,
-});
+const env = process.env.NODE_ENV || "development";
+const config = require(__dirname + "/../config/config")[env];
+
+const sequelize = new Sequelize(
+  config.database,
+  config.username,
+  config.password,
+  {
+    host: process.env.MYSQL_HOST,
+    dialect: "mysql",
+  }
+);
 
 const connectDB = async () => {
   try {
