@@ -8,7 +8,7 @@ const sequelize = new Sequelize(
   config.username,
   config.password,
   {
-    host: process.env.MYSQL_HOST,
+    host: process.env.MYSQLHOST,
     dialect: "mysql",
   }
 );
