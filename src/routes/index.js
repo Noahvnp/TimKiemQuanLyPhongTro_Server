@@ -28,7 +28,7 @@ const initRoutes = (app) => {
   app.use("/api/v1/overview", overviewRouter);
 
   return app.use("/", (req, res) => {
-    console.log("Server started");
+    res.status(200).json({ message: "Server is running" });
   });
 };
 

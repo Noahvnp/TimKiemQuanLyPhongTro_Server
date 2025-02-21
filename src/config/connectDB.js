@@ -3,15 +3,7 @@ const { Sequelize } = require("sequelize");
 const env = process.env.NODE_ENV || "development";
 const config = require(__dirname + "/../config/config")[env];
 
-const sequelize = new Sequelize(
-  config.database,
-  config.username,
-  config.password,
-  {
-    host: process.env.MYSQLHOST,
-    dialect: "mysql",
-  }
-);
+const sequelize = new Sequelize(config);
 
 const connectDB = async () => {
   try {
