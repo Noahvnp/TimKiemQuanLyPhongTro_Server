@@ -1,10 +1,9 @@
 const { Sequelize } = require("sequelize");
 
-const sequelize = new Sequelize("phongtro123", "root", null, {
-  host: "localhost",
-  dialect: "mysql",
-  logging: false,
-});
+const env = process.env.NODE_ENV || "development";
+const config = require(__dirname + "/../config/config")[env];
+
+const sequelize = new Sequelize(config);
 
 const connectDB = async () => {
   try {
